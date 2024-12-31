@@ -1,17 +1,9 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
+const {adminAuth,userAuth} = require('./middleware/auth')
 
-app.use('/admin',(req,res,next)=>{
-    const token = 'xyz';
-    const IsAdminAuthenticated = token === 'xyz';
-    if(!IsAdminAuthenticated){
-        res.status(401).send('unauthorized access')
-    }
-    else{
-        next()
-    }
-})
+app.use('/admin',adminAuth)
 
 
 app.get('/admin/login',(req,res)=>{
@@ -22,12 +14,8 @@ app.post('/admin/signup',(req,res)=>{
 })
 
 
-app.post('/user/login',(req,res)=>{
-    const tokenn = 'xyz'
-    const IsUserAuthenticated = tokenn === 'xyz';
-    if(!IsUserAuthenticated){
-        res.status(401).send('unauthorized access')
-    }
+app.post('/user/login', userAuth, (req,res)=>{
+    
     res.send('user login sucessfully')
 })
 
